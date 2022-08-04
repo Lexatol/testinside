@@ -1,4 +1,4 @@
-# Тестовое задание от компании Inside
+`# Тестовое задание от компании Inside
 
     1.	В БД создать пару sql табличек со связями (foreign keys)
 
@@ -169,3 +169,35 @@
         }
     ]
 
+
+## Curl запросы
+
+### Авторизация
+
+    curl --location --request POST 'localhost:8189/auth' \
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+        "name" : "Vasya",
+        "password": "100" 
+    }'
+
+### Сохранение сообщения в базу данных:
+    curl --location --request POST 'localhost:8189/api/v1/messages/add' \
+    --header 'Authorization: Bearer_eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJWYXN5YSIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiZXhwIjoxNjU5NjQxNDQ2LCJpYXQiOjE2NTk1NTUwNDZ9.ZKaYQTWH-b0OUVW8Pj-8p8dT1dujSces8vpZLO4x9ks' \
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+        "name": "Vasya",
+        "description": "Какой я не постоянный, опять чего нибудь добавить хочу"
+    }'
+
+### Отправка пользователю 10 последних сообщений:
+
+    curl --location --request POST 'localhost:8189/api/v1/messages/add' \
+    --header 'Authorization: Bearer_eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJWYXN5YSIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiZXhwIjoxNjU5NjQxNDQ2LCJpYXQiOjE2NTk1NTUwNDZ9.ZKaYQTWH-b0OUVW8Pj-8p8dT1dujSces8vpZLO4x9ks' \
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+        "name": "Vasya",
+        "description": "history 10"
+    }'
+
+`
