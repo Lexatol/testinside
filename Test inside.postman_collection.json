@@ -1,0 +1,111 @@
+{
+	"info": {
+		"_postman_id": "59769a76-ad27-40a0-a10b-d17392f95989",
+		"name": "Test inside",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authorization",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\" : \"Vasya\",\n    \"password\": \"100\" \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8189/auth",
+					"host": [
+						"localhost"
+					],
+					"port": "8189",
+					"path": [
+						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "save message",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer_eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJWYXN5YSIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiZXhwIjoxNjU5NTM1ODAyLCJpYXQiOjE2NTk0NDk0MDJ9.QXY4sBmBbLvpLfRaS5U_5vVkfp_hWkt9WD7fkvWSUqM",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Vasya\",\n    \"description\": \"это вот реально последнее сообщение\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8189/api/v1/messages/add",
+					"host": [
+						"localhost"
+					],
+					"port": "8189",
+					"path": [
+						"api",
+						"v1",
+						"messages",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "save message or return 10 messages",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer_eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJWYXN5YSIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiZXhwIjoxNjU5NTM0NjE5LCJpYXQiOjE2NTk0NDgyMTl9.50gBobMeTSxrl2t2BIZgd3wz33GqA329PVJfSxlMYTU",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Vasya\",\n    \"description\": \"history 10\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8189/api/v1/messages/add",
+					"host": [
+						"localhost"
+					],
+					"port": "8189",
+					"path": [
+						"api",
+						"v1",
+						"messages",
+						"add"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

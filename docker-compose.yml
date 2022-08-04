@@ -1,0 +1,14 @@
+services:
+  postgres:
+    image: 'postgres:10'
+    container_name: 'postgres'
+    environment:
+      - 'POSTGRES_USER=postgres'
+      - 'POSTGRES_PASSWORD=1234567890'
+      - 'POSTGRES_DB=fhc'
+  app:
+    image: 'lexp00/testinside'
+    container_name: 'testinside'
+    ports:
+      - 8189:8189
+
