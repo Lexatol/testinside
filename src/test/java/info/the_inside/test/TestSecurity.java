@@ -34,11 +34,4 @@ public class TestSecurity {
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isOk()).andReturn();
     }
-//        String token = result.getResponse().getContentAsString();
-//        token = token.replace("{\"token\":\"", "").replace("\"}", "");
-//
-//        mockMvc.perform(get("/api/v1/orders").header("Authorization", "Bearer " + token))
-//                .andExpect(status().isOk());
-
-
 }
