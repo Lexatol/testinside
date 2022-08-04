@@ -7,8 +7,8 @@ services:
       - 'POSTGRES_PASSWORD=1234567890'
       - 'POSTGRES_DB=fhc'
   app:
-    image: 'lexp00/testinside'
-    container_name: 'testinside'
+    image: 'lexp00/testinside1'
+    container_name: 'testinside1'
     ports:
       - 8189:8189
 
