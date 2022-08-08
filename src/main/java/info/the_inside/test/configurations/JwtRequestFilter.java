@@ -5,8 +5,12 @@ package info.the_inside.test.configurations;
  */
 
 
+import info.the_inside.test.exceptions.ResourceNotFoundException;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.flywaydb.core.internal.util.JsonUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import javax.security.auth.message.AuthException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -26,8 +31,10 @@ import java.util.stream.Collectors;
 public class JwtRequestFilter extends OncePerRequestFilter {
     private final JwtTokenUtil jwtTokenUtil;
 
+
+    @SneakyThrows
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
         String authHeader = request.getHeader("Authorization");
 
         String username = null;
@@ -38,16 +45,20 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (authHeader != null && authHeader.startsWith("Bearer_")) {
             jwt = authHeader.substring(7);
             try {
+                jwtTokenUtil.validateAccessToken(jwt);
                 username = jwtTokenUtil.getUsernameFromToken(jwt);
-            } catch (ExpiredJwtException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                throw new AuthException("Not valid token");
             }
         }
+
 
         /*
         выполниться если контекст пустой и пользователь существует
          */
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (username != null && SecurityContextHolder.getContext().
+
+                getAuthentication() == null) {
             /*
             По данным пришедши в токене, кладем их в контект чтобы не обращаться к базе см. код ниже
             Из токена достали имя пользователя и его роль

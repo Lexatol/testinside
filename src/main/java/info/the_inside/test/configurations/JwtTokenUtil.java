@@ -3,14 +3,15 @@ package info.the_inside.test.configurations;
 JwtTokenUtil - отвечает за генерацию, распарсивание токена, проверка токена на валидность
  */
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
+import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Component
+@Slf4j
 public class JwtTokenUtil {
     /*
     Секретный код объявлен в application.yaml
@@ -85,6 +87,31 @@ public class JwtTokenUtil {
         у claims запросили поле roles являющееся листом строк
          */
         return getClaimFromToken(token, (Function<Claims, List<String>>) claims -> claims.get("roles", List.class));
+    }
+
+    private boolean validateToken(@NonNull String token, @NonNull String secret) {
+        try {
+            Jwts.parser()
+                    .setSigningKey(secret)
+                    .parseClaimsJws(token)
+                    .getBody();
+            return true;
+        } catch (ExpiredJwtException expEx) {
+            log.error("Token expired", expEx);
+        } catch (UnsupportedJwtException unsEx) {
+            log.error("Unsupported jwt", unsEx);
+        } catch (MalformedJwtException mjEx) {
+            log.error("Malformed jwt", mjEx);
+        } catch (SignatureException sEx) {
+            log.error("Invalid signature", sEx);
+        } catch (Exception e) {
+            log.error("invalid token", e);
+        }
+        return false;
+    }
+
+    public boolean validateAccessToken(@NonNull String accessToken) {
+        return validateToken(accessToken, secret);
     }
 
 }

@@ -6,6 +6,7 @@ AuthController - контроллер авторизации пользоват�
 import info.the_inside.test.configurations.JwtTokenUtil;
 import info.the_inside.test.dto.JwtRequest;
 import info.the_inside.test.dto.JwtResponse;
+import info.the_inside.test.exceptions.RegistrationError;
 import info.the_inside.test.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,7 +29,7 @@ public class AuthController {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getName(), request.getPassword()));
         } catch (BadCredentialsException ex) {
-            return new ResponseEntity<>("User is not found", HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new RegistrationError("User is not found"), HttpStatus.UNAUTHORIZED);
         }
         UserDetails userDetails = userService.loadUserByUsername(request.getName());
         String token = jwtTokenUtil.generateToken(userDetails);

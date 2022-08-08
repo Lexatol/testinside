@@ -8,6 +8,7 @@ MessageController оотвечает за
 
 
 import info.the_inside.test.dto.MessageDto;
+import info.the_inside.test.exceptions.RegistrationError;
 import info.the_inside.test.service.MessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,7 @@ public class MessageController {
     @PostMapping("/add")
     public ResponseEntity<?> addMessageOrReturnMessage(@RequestBody MessageDto message, Principal principal) {
         if (!message.getName().equals(principal.getName())) {
-            return new ResponseEntity<>("You is not authorization", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(new RegistrationError("You is not authorization"), HttpStatus.FORBIDDEN);
         }
         if (message.getDescription().equals(MESSAGE_HISTORY) && principal.getName().equals(message.getName())) {
             List<MessageDto> messages = messageService.findLimitMessage(message.getName(), LIMIT_MESSAGE);
